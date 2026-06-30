@@ -1,0 +1,799 @@
+/* ============================================================================
+   WEXU — Адаптивная верстка (responsive.css)
+   Mobile First · 320px → 3840px
+   Подключается ПОСЛЕ Tailwind и inline-стилей.
+   ============================================================================ */
+
+/* ── Design tokens (mobile defaults) ─────────────────────────────────────── */
+:root {
+    --gutter: clamp(1rem, 4vw, 3rem);
+    --container-max: 80rem;
+    --section-py: clamp(3rem, 6vw, 6rem);
+    --nav-height: clamp(4rem, 8vw, 5.5rem);
+    --snap-nav-height: 5.5rem;
+
+    /* Fluid type scale */
+    --text-display: clamp(1.65rem, 1.1rem + 2.8vw, 4.5rem);
+    --text-h2: clamp(1.5rem, 1rem + 2vw, 3rem);
+    --text-h3: clamp(1.25rem, 1rem + 1vw, 2.25rem);
+    --text-body: clamp(0.9375rem, 0.875rem + 0.25vw, 1.25rem);
+    --text-small: clamp(0.6875rem, 0.65rem + 0.15vw, 0.8125rem);
+
+    --touch-min: 2.75rem;
+}
+
+/* ── Base (mobile first) ─────────────────────────────────────────────────── */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-size: clamp(14px, 0.8125rem + 0.35vw, 16px);
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+    min-width: 0;
+}
+
+#smooth-wrapper {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+img,
+video,
+iframe,
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.case-study-media img {
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Fluid containers — max-width scales on large screens; padding stays in Tailwind */
+.snap-panel__inner,
+.max-w-7xl {
+    min-width: 0;
+    max-width: 100%;
+}
+
+@media (min-width: 1920px) {
+    .snap-panel__inner.max-w-7xl,
+    .max-w-7xl.mx-auto {
+        max-width: var(--container-max);
+    }
+}
+
+/* Prevent flex/grid blowout */
+#smooth-content > .snap-panel,
+.premium-card,
+.review-card,
+.liquid-glass {
+    min-width: 0;
+}
+
+/* Section headings — fluid */
+.section-header h2 {
+    font-size: var(--text-h2);
+    overflow-wrap: break-word;
+}
+
+#hero-content h1 {
+    font-size: var(--text-display);
+    line-height: 1.08;
+    overflow-wrap: break-word;
+    letter-spacing: -0.03em;
+}
+
+#hero-content h1 .hero-infra-gradient {
+    font-size: clamp(1.45rem, 0.95rem + 2.5vw, 4.25rem);
+    letter-spacing: -0.04em;
+}
+
+#hero-content p {
+    font-size: var(--text-body);
+    max-width: 100%;
+}
+
+#contacts h2.text-4xl {
+    font-size: clamp(1.5rem, 1rem + 2.5vw, 3.75rem);
+}
+
+#cases h3.text-3xl {
+    font-size: var(--text-h3);
+    line-height: 1.2;
+}
+
+h1, h2, h3 {
+    overflow-wrap: break-word;
+}
+
+/* Hero column full width below lg */
+#hero-content {
+    width: 100%;
+    max-width: 100%;
+}
+
+#contacts .flex.flex-col.lg\:flex-row > div {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Hero features — compact grid on narrow screens */
+#hero-content .hero-features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+#hero-content .hero-features > div {
+    min-width: 0;
+}
+
+/* Hero CTA full width on phones */
+#hero-content .hero-reveal a,
+#hero-content .flex.flex-col.sm\:flex-row a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+#lang-toggle {
+    min-height: auto;
+}
+
+input,
+textarea,
+button:not(#lang-toggle) {
+    min-height: var(--touch-min);
+}
+
+input,
+textarea,
+select {
+    font-size: 16px; /* prevents iOS zoom on focus */
+}
+
+@media (min-width: 768px) {
+    input,
+    textarea,
+    select {
+        font-size: inherit;
+    }
+}
+
+/* Hide decorative cursor on touch / narrow */
+@media (max-width: 1023px), (pointer: coarse) {
+    #cursor-follower {
+        display: none !important;
+    }
+}
+
+/* ── Navbar: progressive layout ──────────────────────────────────────────── */
+#navbar.navbar {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.25rem;
+    flex-wrap: nowrap;
+}
+
+.navbar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 0;
+    gap: clamp(0.375rem, 1.5vw, 1rem);
+}
+
+.navbar-start {
+    min-width: 0;
+    flex: 0 1 auto;
+}
+
+.navbar-center {
+    flex: 0 0 auto;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.5rem, 2.5vw, 2.5rem);
+}
+
+.navbar-end {
+    flex: 0 0 auto;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+.navbar-phone {
+    white-space: nowrap;
+}
+
+.navbar-telegram {
+    display: flex !important;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.navbar-links {
+    display: none !important;
+}
+
+/* ≥1280px: logo · links · ENG — равные промежутки (space-between) */
+@media (min-width: 1280px) {
+    .navbar-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        position: static;
+        gap: clamp(0.75rem, 1.5vw, 1.5rem);
+    }
+
+    .navbar-start {
+        flex: 0 0 auto;
+    }
+
+    .navbar-start.flex.items-center.gap-16 {
+        gap: 0;
+    }
+
+    .navbar-links.hidden {
+        display: flex !important;
+        position: static;
+        transform: none;
+        left: auto;
+        top: auto;
+        flex: 0 1 auto;
+        justify-content: space-between;
+        align-items: center;
+        width: clamp(24rem, 32vw, 46rem);
+        min-width: 0;
+        gap: 0 !important;
+        font-size: 0.75rem !important;
+        letter-spacing: 0.1em !important;
+        white-space: nowrap;
+        z-index: auto;
+        pointer-events: auto;
+    }
+
+    .navbar-links.hidden .nav-link {
+        flex: 1 1 0;
+        text-align: center;
+        padding-inline: clamp(0.75rem, 1.35vw, 2rem);
+    }
+
+    .navbar-right {
+        flex: 0 0 auto;
+        display: flex !important;
+        align-items: center;
+        gap: clamp(0.625rem, 1.5vw, 2rem);
+    }
+
+    .navbar-center {
+        margin-left: 0;
+        justify-content: flex-start;
+        gap: clamp(0.625rem, 1.5vw, 2rem);
+        min-width: 0;
+        flex: 0 0 auto;
+    }
+
+    .navbar-end {
+        margin-left: 0;
+        flex: 0 0 auto;
+    }
+}
+
+/* <1280px: лого · ENG · TG · … — равномерно, сжимаются при сужении (не dots) */
+@media (max-width: 1279px) {
+    .navbar-top {
+        justify-content: space-evenly;
+        gap: clamp(0.25rem, 1.5vw, 2rem);
+    }
+
+    .navbar-start,
+    .navbar-right,
+    .navbar-center,
+    .navbar-end {
+        display: contents;
+    }
+
+    .navbar-start > a,
+    .navbar-center > *,
+    .navbar-end > * {
+        flex: 0 1 auto;
+    }
+
+    #navbar-logo {
+        height: clamp(2.5rem, 7vw, 3.25rem) !important;
+    }
+
+    .navbar-phone {
+        display: inline !important;
+        font-size: clamp(0.6875rem, 1.2vw, 0.875rem);
+        white-space: nowrap;
+    }
+
+    .navbar-telegram {
+        display: flex !important;
+    }
+
+    .navbar-telegram svg {
+        width: clamp(1rem, 2.5vw, 1.25rem);
+        height: clamp(1rem, 2.5vw, 1.25rem);
+    }
+
+    .navbar-end,
+    .navbar-cta {
+        display: inline-flex !important;
+    }
+
+    #navbar .navbar-cta {
+        padding: clamp(0.35rem, 1vw, 0.45rem) clamp(0.5rem, 1.5vw, 0.65rem) !important;
+        font-size: clamp(0.5625rem, 1.2vw, 0.625rem) !important;
+        letter-spacing: 0.05em !important;
+        white-space: nowrap;
+    }
+}
+
+/* 768–1279px: лого · ENG · TG · номер · CONSULTATION */
+@media (min-width: 768px) and (max-width: 1279px) {
+    #navbar.navbar {
+        padding-inline: var(--gutter) !important;
+    }
+}
+
+/* 489–767px: лого · ENG · TG · CONSULTATION */
+@media (min-width: 489px) and (max-width: 767px) {
+    #navbar.navbar {
+        padding-inline: var(--gutter) !important;
+        padding-block: 0.65rem !important;
+    }
+
+    .navbar-phone {
+        display: none !important;
+    }
+}
+
+/* ≤488px: лого · ENG · TG */
+@media (max-width: 488px) {
+    #navbar.navbar {
+        padding-inline: var(--gutter) !important;
+        padding-block: 0.65rem !important;
+    }
+
+    .navbar-phone,
+    .navbar-end,
+    .navbar-cta {
+        display: none !important;
+    }
+
+    #navbar-logo {
+        height: clamp(2.25rem, 7vw, 3rem) !important;
+    }
+}
+
+/* ── Section spacing (mobile) ────────────────────────────────────────────── */
+section.pt-36 {
+    padding-top: calc(var(--nav-height) + 1rem) !important;
+}
+
+section.pb-16 {
+    padding-bottom: clamp(2rem, 5vw, 4rem) !important;
+}
+
+section.py-20 {
+    padding-top: var(--section-py) !important;
+    padding-bottom: var(--section-py) !important;
+}
+
+/* ── Cards & grids (mobile) ──────────────────────────────────────────────── */
+#advantages .grid > .premium-card,
+#services .premium-card {
+    min-width: 0;
+}
+
+#services .grid {
+    align-items: stretch;
+}
+
+#services .premium-card.flex.flex-col {
+    height: 100%;
+}
+
+#services .service-card-title {
+    min-height: 4.75rem;
+    line-height: 1.15;
+}
+
+.advantage-card-title {
+    width: 100%;
+    min-width: 0;
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.25rem);
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    line-height: 1.25;
+    min-height: auto;
+}
+
+#advantages .premium-card,
+#services .premium-card,
+.review-card,
+#cases .premium-card .lg\:w-3\/5,
+#contacts .liquid-glass {
+    padding: clamp(1.125rem, 3vw, 2rem) !important;
+}
+
+.review-card-quote {
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.25rem);
+}
+
+#contacts .office-map {
+    height: clamp(300px, 48vw, 480px) !important;
+}
+
+.site-footer {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    border-radius: 0 !important;
+    padding-inline: var(--gutter);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+/* Footer flush to page bottom — no light gap from section padding */
+#contacts.snap-panel {
+    padding-bottom: 0 !important;
+}
+
+section#contacts {
+    padding-bottom: 0 !important;
+}
+
+.site-footer > .relative.z-10 {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 3rem);
+}
+
+.site-footer .flex.flex-wrap {
+    gap: clamp(1.5rem, 4vw, 5rem);
+}
+
+/* Review card footers aligned */
+.review-card-author > p:first-child {
+    min-height: 2.6em;
+    display: flex;
+    align-items: flex-end;
+}
+
+html[lang="ru"] .review-card-author > p:first-child {
+    letter-spacing: 0.04em;
+}
+
+/* Case study media */
+.case-study-media {
+    min-height: clamp(220px, 45vw, 320px);
+}
+
+/* ── 480px+ Mobile landscape / large phones ──────────────────────────────── */
+@media (min-width: 480px) {
+    #hero-content .hero-features {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #hero-content .hero-features > div:last-child {
+        grid-column: 1 / -1;
+    }
+
+    #hero-content .hero-reveal a,
+    #hero-content .flex.flex-col.sm\:flex-row a {
+        width: auto;
+    }
+}
+
+/* ── 768px+ Tablet ───────────────────────────────────────────────────────── */
+@media (min-width: 768px) {
+    html {
+        font-size: clamp(15px, 0.875rem + 0.25vw, 16px);
+    }
+
+    section.pt-36.md\:pt-48 {
+        padding-top: clamp(7rem, 12vw, 10rem) !important;
+    }
+
+    section.pb-16.md\:pb-24 {
+        padding-bottom: clamp(3rem, 6vw, 5rem) !important;
+    }
+
+    section.py-20.md\:py-24 {
+        padding-top: clamp(4rem, 6vw, 5.5rem) !important;
+        padding-bottom: clamp(4rem, 6vw, 5.5rem) !important;
+    }
+
+    #hero-content .hero-reveal a,
+    #hero-content .flex.flex-col.sm\:flex-row a {
+        width: auto;
+        justify-content: center;
+    }
+
+    .case-study-media {
+        min-height: clamp(260px, 35vw, 320px);
+    }
+
+    #navbar .flex.items-center.gap-16 {
+        gap: clamp(1rem, 3vw, 4rem);
+    }
+}
+
+/* ── 1024px+ Small laptop (desktop nav, no snap overrides here) ────────────── */
+@media (min-width: 1024px) {
+    html {
+        font-size: 16px;
+    }
+
+    #hero-content .hero-features {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    html[lang="ru"] #advantages .advantage-card-title {
+        font-size: 0.8125rem;
+        letter-spacing: -0.02em;
+        line-height: 1.3;
+    }
+}
+
+/* ── 1280px+ Desktop ─────────────────────────────────────────────────────── */
+@media (min-width: 1280px) {
+    :root {
+        --container-max: 80rem;
+    }
+
+    html[lang="ru"] #advantages .advantage-card-title {
+        font-size: 0.875rem;
+    }
+}
+
+/* ── 1440px+ Large desktop ───────────────────────────────────────────────── */
+@media (min-width: 1440px) {
+    html {
+        font-size: clamp(16px, 0.5rem + 0.5vw, 17px);
+    }
+
+    html[lang="ru"] #advantages .advantage-card-title {
+        font-size: 0.9375rem;
+    }
+}
+
+/* ── 1920px+ Full HD ─────────────────────────────────────────────────────── */
+@media (min-width: 1920px) {
+    :root {
+        --container-max: 90rem;
+    }
+
+    html {
+        font-size: clamp(17px, 0.45rem + 0.45vw, 19px);
+    }
+}
+
+/* ── 2560px+ 2K / 4K ─────────────────────────────────────────────────────── */
+@media (min-width: 2560px) {
+    :root {
+        --container-max: 96rem;
+    }
+
+    html {
+        font-size: clamp(18px, 0.4rem + 0.4vw, 22px);
+    }
+}
+
+@media (min-width: 3840px) {
+    html {
+        font-size: clamp(20px, 0.35rem + 0.35vw, 26px);
+    }
+}
+
+/* ── Desktop section snap (JS wheel navigation) ────────────────────────────── */
+@media (min-width: 1024px) {
+    html.snap-desktop {
+        scroll-behavior: auto;
+        scroll-padding-top: var(--snap-nav-height);
+    }
+
+    html.snap-desktop body {
+        scroll-padding-top: var(--snap-nav-height);
+    }
+
+    html.snap-desktop #smooth-content > .snap-panel {
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        padding-top: var(--snap-nav-height) !important;
+        padding-bottom: 2rem !important;
+    }
+
+    html.snap-desktop #smooth-content > .snap-panel--screen {
+        justify-content: center;
+        height: 100vh;
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+    }
+
+    html.snap-desktop #smooth-content > .snap-panel--flow {
+        justify-content: flex-start;
+        min-height: 100vh;
+        min-height: 100dvh;
+        height: auto;
+        max-height: none;
+        overflow: visible;
+    }
+
+    html.snap-desktop .snap-panel__inner {
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    html.snap-desktop .snap-panel--screen .snap-panel__inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    html.snap-desktop #hero.snap-panel {
+        padding-bottom: 1.5rem !important;
+    }
+
+    html.snap-desktop #hero .snap-panel__inner {
+        min-height: calc(100dvh - var(--snap-nav-height) - 1.5rem);
+        justify-content: center;
+    }
+
+    html.snap-desktop .snap-panel--screen .section-header {
+        margin-bottom: 2rem !important;
+    }
+
+    html.snap-desktop #advantages .section-header,
+    html.snap-desktop #services .section-header {
+        margin-bottom: 1.75rem !important;
+    }
+
+    html.snap-desktop #portfolio .section-header {
+        margin-bottom: 1.25rem !important;
+    }
+
+    html.snap-desktop #contacts.snap-panel {
+        padding-bottom: 0 !important;
+    }
+
+    html.snap-desktop #contacts .office-map {
+        height: 440px !important;
+    }
+}
+
+/* Mobile / tablet: CSS scroll-snap between sections */
+@media (max-width: 1023px) {
+    html.snap-mobile {
+        scroll-snap-type: y proximity;
+        scroll-padding-top: var(--nav-height);
+    }
+
+    html.snap-mobile body {
+        scroll-padding-top: var(--nav-height);
+    }
+
+    html.snap-mobile #smooth-content > .snap-panel {
+        scroll-snap-align: start;
+        scroll-snap-stop: normal;
+    }
+
+    html.snap-mobile #smooth-content > .snap-panel--screen {
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+}
+
+/* Snap-dots — вторая строка navbar (<1280px, под лого · ENG · TG) */
+.navbar .snap-dots.navbar-dots {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.4rem, 2vw, 0.75rem);
+    width: 100%;
+    flex: 0 0 auto;
+    min-width: 0;
+    padding: 0.2rem 0 0.1rem;
+    margin: 0;
+    position: static;
+    background: none;
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transform: none;
+    pointer-events: auto;
+}
+
+@media (max-width: 1279px) {
+    :root {
+        --nav-height: clamp(5rem, 10vw, 6.75rem);
+        --snap-nav-height: clamp(5.5rem, 11vw, 7.25rem);
+    }
+
+    #navbar.navbar {
+        padding-bottom: 0.45rem !important;
+    }
+
+    .navbar .snap-dots.navbar-dots {
+        display: flex !important;
+    }
+
+    .navbar .snap-dots.navbar-dots a {
+        width: clamp(0.4rem, 1.1vw, 0.5rem);
+        height: clamp(0.4rem, 1.1vw, 0.5rem);
+    }
+}
+
+@media (min-width: 1280px) {
+    .navbar .snap-dots.navbar-dots {
+        display: none !important;
+        pointer-events: none !important;
+    }
+}
+
+.snap-dots a {
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: rgba(35, 47, 62, 0.18);
+    border: 1px solid rgba(255, 153, 0, 0.35);
+    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.snap-dots a:hover {
+    background: rgba(255, 153, 0, 0.45);
+    transform: scale(1.15);
+}
+
+.snap-dots a.is-active {
+    background: #ff9900;
+    box-shadow: 0 0 12px rgba(255, 153, 0, 0.55);
+    transform: scale(1.25);
+}
+
+/* ── Touch: disable hover-only transforms where unsupported ──────────────── */
+@media (hover: none) {
+    .interactive-card {
+        transform: none !important;
+    }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    html.snap-desktop #smooth-content > .snap-panel {
+        min-height: auto;
+        height: auto;
+        max-height: none;
+        overflow: visible;
+    }
+}
