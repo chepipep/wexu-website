@@ -3,9 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build:canvas": "node scripts/canvas-to-site.mjs",
     "dev": "npm run build:canvas && vite",
-    "build": "npm run build:canvas && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
